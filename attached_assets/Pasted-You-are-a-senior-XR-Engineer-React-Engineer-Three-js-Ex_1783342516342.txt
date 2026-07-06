@@ -1,0 +1,260 @@
+You are a senior XR Engineer, React Engineer, Three.js Expert, React Three Fiber Expert, HCI Researcher, UX Designer, and Computer Networks Professor.
+
+You are building a university research prototype, not a commercial application.
+
+The application will be used to evaluate whether interactive Spatial UI learning improves learning outcomes compared to passive video learning.
+
+Do NOT create an LMS, MOOC platform, dashboard, login page, profile page, settings page, or course management system.
+
+This application is a single immersive guided learning experience.
+
+The user should immediately enter the simulation after clicking Start.
+
+Technology Stack
+
+• React
+• TypeScript
+• Vite
+• React Three Fiber
+• Three.js
+• @react-three/drei
+• @react-three/xr
+• Tailwind CSS
+• Framer Motion
+• Zustand
+
+The application must support both Desktop Mode and Meta Quest WebXR.
+
+==================================================
+
+PROJECT NAME
+
+NetworkVerse
+
+Tagline
+
+Experience How Data Travels Across the Internet
+
+==================================================
+
+USER EXPERIENCE
+
+When the application opens, display only a beautiful landing scene.
+
+The scene should contain
+
+Title
+
+NetworkVerse
+
+Subtitle
+
+Experience How Data Travels Across the Internet
+
+One large Start button.
+
+No other UI.
+
+When the Start button is pressed, smoothly transition into the virtual learning environment.
+
+==================================================
+
+LEARNING EXPERIENCE
+
+The learning experience must be completely story driven.
+
+The student should feel like they are inside a virtual networking laboratory.
+
+The entire simulation should be guided through narration and visual animations.
+
+No long paragraphs.
+
+Use short explanations.
+
+==================================================
+
+SCENE 1
+
+Create a modern virtual computer laboratory.
+
+Include
+
+Desk
+
+Laptop
+
+Router
+
+Network Switch
+
+Server Rack
+
+Whiteboard
+
+Soft lighting
+
+Apple VisionOS inspired glass panels
+
+Beautiful shadows
+
+Spatial environment
+
+The camera should naturally move toward the laptop.
+
+Display narration.
+
+"Today we will learn how a data packet travels across the Internet."
+
+==================================================
+
+SCENE 2
+
+The laptop screen turns on.
+
+Display
+
+Hello Server
+
+Create a large glowing Send button.
+
+When the student presses Send
+
+Generate a glowing Data Packet.
+
+The packet initially contains only application data.
+
+No headers.
+
+Allow the student to
+
+Rotate the packet
+
+Zoom
+
+Inspect
+
+==================================================
+
+SCENE 3
+
+Application Layer
+
+Animate the Application Layer processing the message.
+
+Create an Application Header.
+
+Attach it to the packet.
+
+Explain briefly what this layer does.
+
+Allow the user to click the header.
+
+Expand it.
+
+Rotate it.
+
+Inspect every field.
+
+==================================================
+
+IMPORTANT
+
+Do not continue beyond the Application Layer.
+
+Only create the project foundation and Scene 1 to Scene 3.
+
+Prepare the architecture so future scenes can be added easily.
+
+Future scenes will include
+
+Transport Layer
+
+Internet Layer
+
+Network Interface Layer
+
+Ethernet Frame
+
+Router Processing
+
+TCP vs UDP
+
+IGP vs EGP
+
+Packet Routing
+
+Server Communication
+
+Decapsulation
+
+Do NOT implement them yet.
+
+==================================================
+
+ARCHITECTURE
+
+Each learning scene must be its own reusable React component.
+
+Example
+
+SceneIntro
+
+SceneLaptop
+
+SceneApplicationLayer
+
+Every packet animation should be reusable.
+
+Every header should be reusable.
+
+The packet should be implemented as a reusable 3D object.
+
+All animations must be modular.
+
+Do not hardcode future content.
+
+==================================================
+
+VISUAL STYLE
+
+Apple VisionOS inspired
+
+Glassmorphism
+
+Soft shadows
+
+Realistic lighting
+
+Modern typography
+
+Smooth animations
+
+Floating UI panels
+
+Beautiful transitions
+
+Professional educational quality
+
+==================================================
+
+RESEARCH REQUIREMENTS
+
+This is an educational research prototype.
+
+The code must be clean.
+
+Maintainable.
+
+Well documented.
+
+Professional.
+
+Scalable.
+
+Do not simplify the implementation.
+
+Think like a senior software engineer building software for a university research project.
+
+Do not generate placeholder code.
+
+Produce production quality code from the beginning.
