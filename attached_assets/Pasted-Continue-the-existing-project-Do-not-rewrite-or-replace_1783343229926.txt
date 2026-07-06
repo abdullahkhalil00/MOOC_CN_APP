@@ -1,0 +1,481 @@
+Continue the existing project.
+
+
+
+Do not rewrite or replace any existing code.
+
+
+
+Preserve the current architecture, components, animations, state management, and coding standards.
+
+
+
+Extend the current implementation only.
+
+
+
+This is the next scene in the guided learning experience.
+
+
+
+==================================================
+
+
+
+Scene 4
+
+
+
+Transport Layer
+
+
+
+After the Application Layer animation finishes, smoothly transition to the Transport Layer.
+
+
+
+The camera should move closer to the packet.
+
+
+
+Display narration:
+
+
+
+"The Transport Layer is responsible for reliable or fast communication. Here we choose which protocol will carry our message."
+
+
+
+==================================================
+
+
+
+Protocol Selection
+
+
+
+Display two floating interactive cards.
+
+
+
+TCP
+
+
+
+UDP
+
+
+
+The user must physically select one.
+
+
+
+The cards should animate when hovered and selected.
+
+
+
+==================================================
+
+
+
+If TCP is selected
+
+
+
+Animate the TCP Three-Way Handshake.
+
+
+
+Step 1
+
+
+
+SYN
+
+
+
+Laptop → Router
+
+
+
+Step 2
+
+
+
+SYN ACK
+
+
+
+Server → Laptop
+
+
+
+Step 3
+
+
+
+ACK
+
+
+
+Laptop → Server
+
+
+
+After the handshake completes,
+
+
+
+Create a realistic TCP Header.
+
+
+
+Animate it attaching to the existing packet.
+
+
+
+==================================================
+
+
+
+TCP Header
+
+
+
+Allow the student to inspect every field.
+
+
+
+Show
+
+
+
+Source Port
+
+
+
+Destination Port
+
+
+
+Sequence Number
+
+
+
+Acknowledgement Number
+
+
+
+Flags
+
+
+
+Window Size
+
+
+
+Checksum
+
+
+
+Urgent Pointer
+
+
+
+Each field should be clickable.
+
+
+
+When clicked,
+
+
+
+Show a short explanation.
+
+
+
+Allow the packet to rotate while inspecting.
+
+
+
+==================================================
+
+
+
+Interactive Learning
+
+
+
+Ask the learner:
+
+
+
+"Why would you choose TCP?"
+
+
+
+Options
+
+
+
+Reliable Delivery
+
+
+
+Fast Delivery
+
+
+
+No Connection
+
+
+
+No Error Checking
+
+
+
+If the learner selects the correct answer,
+
+
+
+Continue.
+
+
+
+If incorrect,
+
+
+
+Explain briefly and allow another attempt.
+
+
+
+==================================================
+
+
+
+If UDP is selected
+
+
+
+Animate immediate transmission.
+
+
+
+No handshake.
+
+
+
+Create a UDP Header.
+
+
+
+Attach it to the packet.
+
+
+
+==================================================
+
+
+
+UDP Header
+
+
+
+Allow inspection of
+
+
+
+Source Port
+
+
+
+Destination Port
+
+
+
+Length
+
+
+
+Checksum
+
+
+
+==================================================
+
+
+
+Interactive Comparison
+
+
+
+Display TCP and UDP side by side.
+
+
+
+Animate the differences.
+
+
+
+TCP
+
+
+
+Reliable
+
+
+
+Connection Oriented
+
+
+
+Handshake
+
+
+
+Acknowledgements
+
+
+
+Error Recovery
+
+
+
+UDP
+
+
+
+Fast
+
+
+
+Connectionless
+
+
+
+No Handshake
+
+
+
+Lower Overhead
+
+
+
+==================================================
+
+
+
+Learning Challenge
+
+
+
+Randomly simulate packet transmission.
+
+
+
+If TCP
+
+
+
+Show
+
+
+
+Packet Lost
+
+
+
+↓
+
+
+
+Automatic Retransmission
+
+
+
+↓
+
+
+
+Packet Delivered
+
+
+
+If UDP
+
+
+
+Show
+
+
+
+Packet Lost
+
+
+
+↓
+
+
+
+Packet Dropped
+
+
+
+↓
+
+
+
+No Retransmission
+
+
+
+Explain why.
+
+
+
+==================================================
+
+
+
+Important
+
+
+
+Do NOT continue to the Internet Layer.
+
+
+
+Do NOT implement IP Header.
+
+
+
+Do NOT implement Router Logic.
+
+
+
+Do NOT implement Ethernet.
+
+
+
+Only finish the Transport Layer scene.
+
+
+
+Everything should remain modular.
+
+
+
+Every animation should be reusable.
+
+
+
+Every header should be reusable.
+
+
+
+Use production quality code.
+
+
+
+Follow the existing architecture.  complete it i will give you further details 

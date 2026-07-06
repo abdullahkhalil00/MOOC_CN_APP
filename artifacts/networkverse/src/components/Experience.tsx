@@ -7,6 +7,7 @@ import { LandingScreen } from './scenes/LandingScreen';
 import { SceneIntro } from './scenes/SceneIntro';
 import { SceneLaptop } from './scenes/SceneLaptop';
 import { SceneApplicationLayer } from './scenes/SceneApplicationLayer';
+import { SceneTransport } from './scenes/SceneTransport';
 import { NarrationCaption } from './ui/NarrationCaption';
 
 const xrStore = createXRStore();
@@ -49,6 +50,7 @@ export function Experience() {
             {currentScene >= SceneState.INTRO && <SceneIntro />}
             {currentScene >= SceneState.LAPTOP && <SceneLaptop />}
             {currentScene >= SceneState.APP_LAYER && <SceneApplicationLayer />}
+            {currentScene >= SceneState.TRANSPORT && <SceneTransport />}
           </Suspense>
         </XR>
       </Canvas>

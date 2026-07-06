@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSimulationStore, SceneState } from '../../store/simulationStore';
 import { DataPacket } from '../3d/DataPacket';
+import { ContinuePrompt } from '../ui/ContinuePrompt';
 
 export function SceneApplicationLayer() {
   const currentScene = useSimulationStore((state) => state.currentScene);
+  const setScene = useSimulationStore((state) => state.setScene);
   const setNarrationText = useSimulationStore((state) => state.setNarrationText);
   const addPacketHeader = useSimulationStore((state) => state.addPacketHeader);
   const packetHeaders = useSimulationStore((state) => state.packetHeaders);
+  const [showContinue, setShowContinue] = useState(false);
 
   useEffect(() => {
     if (currentScene === SceneState.APP_LAYER) {
@@ -26,6 +29,7 @@ export function SceneApplicationLayer() {
             ]
           });
         }
+        setShowContinue(true);
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -39,6 +43,17 @@ export function SceneApplicationLayer() {
   return (
     <group position={[0, 1.5, 0.5]}>
       <DataPacket headers={packetHeaders} />
+      {currentScene === SceneState.APP_LAYER && showContinue && (
+        <ContinuePrompt
+          text="Inspect the Application Header, then continue to the Transport Layer."
+          buttonLabel="Continue to Transport Layer"
+          onContinue={() => {
+            setShowContinue(false);
+            setNarrationText(null);
+            setScene(SceneState.TRANSPORT);
+          }}
+        />
+      )}
     </group>
   );
 }

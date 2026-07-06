@@ -32,6 +32,10 @@ export function SceneIntro() {
       cameraControlsRef.current.setLookAt(2, 2, 4, 0, 0.5, 0, true);
     } else if (cameraControlsRef.current && currentScene === SceneState.LAPTOP) {
       cameraControlsRef.current.setLookAt(0, 1.2, 2, 0, 0.5, 0, true);
+    } else if (cameraControlsRef.current && currentScene === SceneState.APP_LAYER) {
+      cameraControlsRef.current.setLookAt(0, 1.7, 1.4, 0, 1.5, 0.5, true);
+    } else if (cameraControlsRef.current && currentScene === SceneState.TRANSPORT) {
+      cameraControlsRef.current.setLookAt(0, 1.6, 1.0, 0, 1.5, 0.5, true);
     }
   }, [currentScene]);
 
