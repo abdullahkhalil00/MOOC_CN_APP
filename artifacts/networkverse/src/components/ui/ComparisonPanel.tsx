@@ -8,31 +8,32 @@ interface ComparisonColumn {
 }
 
 interface ComparisonPanelProps {
+  position?: [number, number, number];
   columns: [ComparisonColumn, ComparisonColumn];
   onContinue: () => void;
 }
 
-export function ComparisonPanel({ columns, onContinue }: ComparisonPanelProps) {
+export function ComparisonPanel({ position = [0, 0, 0], columns, onContinue }: ComparisonPanelProps) {
   return (
-    <Html fullscreen zIndexRange={[95, 0]} pointerEvents="none">
-      <div className="w-full h-full flex items-center justify-center pointer-events-none">
+    <group position={position}>
+      <Html transform distanceFactor={2.4} center zIndexRange={[90, 0]}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-panel rounded-2xl p-8 pointer-events-auto border-t border-white/20 max-w-2xl w-full"
+          className="glass-panel rounded-2xl p-6 border-t border-white/20 w-[420px]"
         >
-          <h3 className="text-center text-lg font-semibold text-slate-100 mb-6">TCP vs UDP</h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-center text-base font-semibold text-slate-100 mb-4">TCP vs UDP</h3>
+          <div className="grid grid-cols-2 gap-4">
             {columns.map((col) => (
               <div key={col.title}>
-                <div className="text-center font-bold text-sm mb-3 tracking-widest" style={{ color: col.color }}>
+                <div className="text-center font-bold text-xs mb-2 tracking-widest" style={{ color: col.color }}>
                   {col.title}
                 </div>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {col.points.map((p) => (
                     <li
                       key={p}
-                      className="text-xs text-slate-200 bg-white/5 rounded-lg px-3 py-2 border"
+                      className="text-[11px] text-slate-200 bg-white/5 rounded-lg px-2.5 py-1.5 border"
                       style={{ borderColor: `${col.color}40` }}
                     >
                       {p}
@@ -42,16 +43,16 @@ export function ComparisonPanel({ columns, onContinue }: ComparisonPanelProps) {
               </div>
             ))}
           </div>
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-5">
             <button
               onClick={onContinue}
-              className="px-6 py-2.5 rounded-lg bg-cyan-600/30 border border-cyan-400 text-cyan-100 text-sm font-medium hover:bg-cyan-500/50 transition-colors"
+              className="px-5 py-2 rounded-lg bg-cyan-600/30 border border-cyan-400 text-cyan-100 text-xs font-medium hover:bg-cyan-500/50 transition-colors"
             >
               Continue
             </button>
           </div>
         </motion.div>
-      </div>
-    </Html>
+      </Html>
+    </group>
   );
 }

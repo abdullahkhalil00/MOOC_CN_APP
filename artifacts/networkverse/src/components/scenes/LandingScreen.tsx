@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { useSimulationStore, SceneState } from '../../store/simulationStore';
+import { useSimulationStore } from '../../store/simulationStore';
 
 export function LandingScreen() {
-  const setScene = useSimulationStore((state) => state.setScene);
+  const start = useSimulationStore((state) => state.start);
 
   return (
     <motion.div
@@ -36,7 +36,7 @@ export function LandingScreen() {
           transition={{ delay: 0.6 }}
           whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(56, 189, 248, 0.5)" }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setScene(SceneState.INTRO)}
+          onClick={() => start()}
           className="px-8 py-4 bg-sky-500/20 border border-sky-400/50 text-sky-300 rounded-full font-medium tracking-wide transition-all shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:bg-sky-500/30"
         >
           START SIMULATION

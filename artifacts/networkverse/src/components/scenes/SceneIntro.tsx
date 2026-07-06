@@ -1,54 +1,69 @@
 import { useEffect, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
 import { CameraControls, Box, Plane } from '@react-three/drei';
 import * as THREE from 'three';
-import { useSimulationStore, SceneState } from '../../store/simulationStore';
+import { useSimulationStore, SceneState, JourneyStep } from '../../store/simulationStore';
+
+// Steps where the learner is inspecting something attached to the packet —
+// the camera pushes in slightly closer for these, but never leaves the
+// laptop/packet area entirely.
+const CLOSE_UP_STEPS = new Set<JourneyStep>([
+  JourneyStep.APP_HEADER,
+  JourneyStep.TRANSPORT_HEADER,
+  JourneyStep.TRANSPORT_QUIZ,
+  JourneyStep.TRANSPORT_COMPARISON,
+  JourneyStep.TRANSPORT_CHALLENGE,
+]);
 
 export function SceneIntro() {
-  const setScene = useSimulationStore((state) => state.setScene);
+  const sceneState = useSimulationStore((state) => state.sceneState);
+  const journeyStep = useSimulationStore((state) => state.journeyStep);
+  const setJourneyStep = useSimulationStore((state) => state.setJourneyStep);
   const setNarrationText = useSimulationStore((state) => state.setNarrationText);
-  const currentScene = useSimulationStore((state) => state.currentScene);
-  
+
   const cameraControlsRef = useRef<CameraControls>(null);
   const laptopRef = useRef<THREE.Group>(null);
-  
-  useEffect(() => {
-    if (currentScene === SceneState.INTRO) {
-      setNarrationText("Today we will learn how a data packet travels across the Internet.");
-      
-      const timer = setTimeout(() => {
-        setNarrationText(null);
-        setScene(SceneState.LAPTOP);
-      }, 5000);
-      
-      return () => clearTimeout(timer);
-    }
-
-    return undefined;
-  }, [currentScene, setNarrationText, setScene]);
 
   useEffect(() => {
-    if (cameraControlsRef.current && currentScene === SceneState.INTRO) {
+    if (sceneState !== SceneState.RUNNING || journeyStep !== JourneyStep.INTRO) return undefined;
+
+    setNarrationText('Today we will learn how a data packet travels across the Internet.');
+
+    const timer = setTimeout(() => {
+      setNarrationText(null);
+      setJourneyStep(JourneyStep.LAPTOP_READY);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [sceneState, journeyStep, setNarrationText, setJourneyStep]);
+
+  useEffect(() => {
+    if (!cameraControlsRef.current || sceneState !== SceneState.RUNNING) return;
+
+    if (journeyStep === JourneyStep.INTRO) {
+      // Establishing shot of the virtual lab
       cameraControlsRef.current.setLookAt(2, 2, 4, 0, 0.5, 0, true);
-    } else if (cameraControlsRef.current && currentScene === SceneState.LAPTOP) {
+    } else if (journeyStep === JourneyStep.LAPTOP_READY) {
+      // Settle in front of the laptop
       cameraControlsRef.current.setLookAt(0, 1.2, 2, 0, 0.5, 0, true);
-    } else if (cameraControlsRef.current && currentScene === SceneState.APP_LAYER) {
-      cameraControlsRef.current.setLookAt(0, 1.7, 1.4, 0, 1.5, 0.5, true);
-    } else if (cameraControlsRef.current && currentScene === SceneState.TRANSPORT) {
-      cameraControlsRef.current.setLookAt(0, 1.6, 1.0, 0, 1.5, 0.5, true);
+    } else if (CLOSE_UP_STEPS.has(journeyStep)) {
+      // Push in close to inspect the packet, without leaving the laptop area
+      cameraControlsRef.current.setLookAt(0.05, 1.55, 0.85, 0, 1.3, 0.15, true);
+    } else {
+      // A steady medium shot framing both the laptop and the floating packet
+      cameraControlsRef.current.setLookAt(0.15, 1.6, 1.3, 0, 1.25, 0.2, true);
     }
-  }, [currentScene]);
+  }, [journeyStep, sceneState]);
 
   return (
     <>
       <CameraControls ref={cameraControlsRef} makeDefault />
-      
+
       {/* Room */}
       <group position={[0, 0, 0]}>
         <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <meshStandardMaterial color="#0f172a" roughness={0.8} />
         </Plane>
-        
+
         {/* Desk */}
         <Box args={[3, 0.05, 1.5]} position={[0, 0.75, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#1e293b" roughness={0.5} />
@@ -75,12 +90,12 @@ export function SceneIntro() {
             </Plane>
           </group>
         </group>
-        
+
         {/* Router / Switch on desk */}
         <Box args={[0.4, 0.05, 0.3]} position={[0.8, 0.78, -0.3]} castShadow>
           <meshStandardMaterial color="#0f172a" />
         </Box>
-        
+
         {/* Server Rack (background) */}
         <Box args={[0.8, 2, 0.8]} position={[-2, 1, -2]} castShadow receiveShadow>
           <meshStandardMaterial color="#020617" metalness={0.9} roughness={0.1} />

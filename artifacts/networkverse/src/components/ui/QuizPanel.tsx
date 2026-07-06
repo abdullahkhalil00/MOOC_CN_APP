@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { QuizOptionDef } from '../../lib/protocolData';
 
 interface QuizPanelProps {
+  position?: [number, number, number];
   question: string;
   options: QuizOptionDef[];
   onCorrect: () => void;
 }
 
-export function QuizPanel({ question, options, onCorrect }: QuizPanelProps) {
+export function QuizPanel({ position = [0, 0, 0], question, options, onCorrect }: QuizPanelProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const [wrongFeedback, setWrongFeedback] = useState<string | null>(null);
 
@@ -25,14 +26,14 @@ export function QuizPanel({ question, options, onCorrect }: QuizPanelProps) {
   };
 
   return (
-    <Html fullscreen zIndexRange={[95, 0]} pointerEvents="none">
-      <div className="w-full h-full flex items-center justify-center pointer-events-none">
+    <group position={position}>
+      <Html transform distanceFactor={2.2} center zIndexRange={[90, 0]}>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-panel rounded-2xl p-8 max-w-md pointer-events-auto border-t border-white/20"
+          className="glass-panel rounded-2xl p-6 w-[320px] border-t border-white/20"
         >
-          <h3 className="text-lg font-semibold text-slate-100 mb-5">{question}</h3>
+          <h3 className="text-base font-semibold text-slate-100 mb-4">{question}</h3>
           <div className="space-y-2">
             {options.map((opt, i) => {
               const isSelectedWrong = selected === i && !opt.correct;
@@ -41,7 +42,7 @@ export function QuizPanel({ question, options, onCorrect }: QuizPanelProps) {
                 <button
                   key={opt.label}
                   onClick={() => handleSelect(i)}
-                  className={`w-full text-left px-4 py-2.5 rounded-lg border transition-colors text-sm font-medium ${
+                  className={`w-full text-left px-3 py-2 rounded-lg border transition-colors text-xs font-medium ${
                     isSelectedRight
                       ? 'border-emerald-400 bg-emerald-500/20 text-emerald-200'
                       : isSelectedWrong
@@ -60,14 +61,14 @@ export function QuizPanel({ question, options, onCorrect }: QuizPanelProps) {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="mt-4 text-xs text-rose-300"
+                className="mt-3 text-[11px] text-rose-300"
               >
                 {wrongFeedback}
               </motion.p>
             )}
           </AnimatePresence>
         </motion.div>
-      </div>
-    </Html>
+      </Html>
+    </group>
   );
 }

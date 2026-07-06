@@ -1,11 +1,29 @@
 import { create } from 'zustand';
 
+// The experience has exactly two top-level states: the landing overlay, and
+// the single persistent 3D world. Everything after "start" happens inside
+// that one world — progress is tracked via `journeyStep`, not by mounting
+// or unmounting different "scenes".
 export enum SceneState {
   LANDING,
+  RUNNING,
+}
+
+// A continuous timeline describing where the packet is in its journey.
+// New layers (Internet, Network Interface, ...) extend this enum — they
+// never require swapping out the world or the camera rig.
+export enum JourneyStep {
   INTRO,
-  LAPTOP,
-  APP_LAYER,
-  TRANSPORT,
+  LAPTOP_READY,
+  SENDING,
+  APP_HEADER,
+  TRANSPORT_SELECT,
+  TRANSPORT_HANDSHAKE,
+  TRANSPORT_HEADER,
+  TRANSPORT_QUIZ,
+  TRANSPORT_COMPARISON,
+  TRANSPORT_CHALLENGE,
+  COMPLETE,
 }
 
 export interface HeaderField {
@@ -24,39 +42,39 @@ export interface HeaderData {
 export type TransportProtocol = 'TCP' | 'UDP';
 
 interface SimulationState {
-  currentScene: SceneState;
+  sceneState: SceneState;
+  journeyStep: JourneyStep;
   narrationText: string | null;
   packetHeaders: HeaderData[];
-  packetSpawned: boolean;
   transportProtocol: TransportProtocol | null;
 
-  setScene: (scene: SceneState) => void;
+  start: () => void;
+  setJourneyStep: (step: JourneyStep) => void;
   setNarrationText: (text: string | null) => void;
   addPacketHeader: (header: HeaderData) => void;
-  setPacketSpawned: (spawned: boolean) => void;
   setTransportProtocol: (protocol: TransportProtocol | null) => void;
   resetSimulation: () => void;
 }
 
 export const useSimulationStore = create<SimulationState>((set) => ({
-  currentScene: SceneState.LANDING,
+  sceneState: SceneState.LANDING,
+  journeyStep: JourneyStep.INTRO,
   narrationText: null,
   packetHeaders: [],
-  packetSpawned: false,
   transportProtocol: null,
 
-  setScene: (scene) => set({ currentScene: scene }),
+  start: () => set({ sceneState: SceneState.RUNNING, journeyStep: JourneyStep.INTRO }),
+  setJourneyStep: (step) => set({ journeyStep: step }),
   setNarrationText: (text) => set({ narrationText: text }),
   addPacketHeader: (header) => set((state) => ({
-    packetHeaders: [...state.packetHeaders, header]
+    packetHeaders: [...state.packetHeaders, header],
   })),
-  setPacketSpawned: (spawned) => set({ packetSpawned: spawned }),
   setTransportProtocol: (protocol) => set({ transportProtocol: protocol }),
   resetSimulation: () => set({
-    currentScene: SceneState.LANDING,
+    sceneState: SceneState.LANDING,
+    journeyStep: JourneyStep.INTRO,
     narrationText: null,
     packetHeaders: [],
-    packetSpawned: false,
     transportProtocol: null,
   }),
 }));
