@@ -1,0 +1,15 @@
+# Netlify config for mockup-sandbox (pnpm monorepo)
+[build]
+  command = "pnpm --filter @workspace/mockup-sandbox run build"
+  publish = "artifacts/mockup-sandbox/dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PORT = "8081"
+  # Netlify serves from site root, not /__mockup like Replit
+  BASE_PATH = "/"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
