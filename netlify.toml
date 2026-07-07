@@ -1,12 +1,11 @@
-# Netlify config for mockup-sandbox (pnpm monorepo)
+# Netlify config for NetworkVerse (main app)
 [build]
-  command = "pnpm --filter @workspace/mockup-sandbox run build"
-  publish = "artifacts/mockup-sandbox/dist"
+  command = "pnpm --filter @workspace/networkverse run build"
+  publish = "artifacts/networkverse/dist/public"
 
 [build.environment]
   NODE_VERSION = "24"
-  PORT = "8081"
-  # Netlify serves from site root, not /__mockup like Replit
+  PORT = "22003"
   BASE_PATH = "/"
 
 [[redirects]]
