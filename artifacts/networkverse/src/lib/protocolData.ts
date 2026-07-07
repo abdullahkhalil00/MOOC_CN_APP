@@ -1,38 +1,59 @@
-import { HeaderField } from '../store/simulationStore';
-
-export const TCP_HEADER_FIELDS: HeaderField[] = [
-  { label: 'Source Port', value: '52344', explanation: 'The port number on the sending device that this data is coming from.' },
-  { label: 'Destination Port', value: '443', explanation: 'The port on the receiving server that will handle this data (443 = HTTPS).' },
-  { label: 'Sequence Number', value: '1104582391', explanation: 'Tracks the order of bytes sent so the receiver can reassemble the data correctly.' },
-  { label: 'Acknowledgement Number', value: '1104582712', explanation: 'Tells the sender which byte the receiver expects next, confirming what has arrived so far.' },
-  { label: 'Flags', value: 'ACK, PSH', explanation: 'Control bits describing the purpose of this segment, such as SYN, ACK, FIN, or RST.' },
-  { label: 'Window Size', value: '65535', explanation: 'How many bytes the receiver is willing to accept before it needs another acknowledgement.' },
-  { label: 'Checksum', value: '0x4F2A', explanation: 'A value used to detect if the header and data were corrupted in transit.' },
-  { label: 'Urgent Pointer', value: '0', explanation: 'Marks urgent data within the segment that should be processed immediately. Rarely used.' },
-];
-
-export const UDP_HEADER_FIELDS: HeaderField[] = [
-  { label: 'Source Port', value: '52344', explanation: 'The port number on the sending device that this data is coming from.' },
-  { label: 'Destination Port', value: '53', explanation: 'The port on the receiving server that will handle this data (53 = DNS).' },
-  { label: 'Length', value: '48 bytes', explanation: 'The total size of the UDP header plus its data, measured in bytes.' },
-  { label: 'Checksum', value: '0x1C9E', explanation: 'An optional value used to detect corruption in the header and data.' },
-];
-
-export const TCP_FEATURES = ['Reliable', 'Connection Oriented', 'Handshake', 'Acknowledgements', 'Error Recovery'];
-export const UDP_FEATURES = ['Fast', 'Connectionless', 'No Handshake', 'Lower Overhead'];
-
-export interface QuizOptionDef {
+export interface HeaderField {
   label: string;
-  correct: boolean;
-  feedback?: string;
+  value: string;
+  highlight?: boolean;
 }
 
-export const TRANSPORT_QUIZ: { question: string; options: QuizOptionDef[] } = {
-  question: 'Why would you choose TCP?',
-  options: [
-    { label: 'Reliable Delivery', correct: true },
-    { label: 'Fast Delivery', correct: false, feedback: 'Fast delivery is more characteristic of UDP, which skips reliability checks for speed.' },
-    { label: 'No Connection', correct: false, feedback: 'TCP is connection-oriented — it establishes a handshake before sending any data.' },
-    { label: 'No Error Checking', correct: false, feedback: 'TCP actually performs extensive error checking and retransmission, unlike UDP.' },
-  ],
-};
+export const APP_FIELDS: HeaderField[] = [
+  { label: 'Data', value: '"Hello Server"' },
+  { label: 'Size', value: '48 Bytes' },
+  { label: 'Protocol', value: 'HTTP/1.1' },
+  { label: 'Method', value: 'GET' },
+  { label: 'Host', value: 'srv.example.com' },
+];
+
+export const TCP_FIELDS: HeaderField[] = [
+  { label: 'Src Port', value: '52341' },
+  { label: 'Dst Port', value: '80 (HTTP)', highlight: true },
+  { label: 'Sequence #', value: '1001', highlight: true },
+  { label: 'ACK #', value: '0' },
+  { label: 'Flags', value: 'SYN', highlight: true },
+  { label: 'Window', value: '65535' },
+  { label: 'Checksum', value: '0xA2F1', highlight: true },
+];
+
+export const UDP_FIELDS: HeaderField[] = [
+  { label: 'Src Port', value: '52341' },
+  { label: 'Dst Port', value: '53 (DNS)', highlight: true },
+  { label: 'Length', value: '60 Bytes', highlight: true },
+  { label: 'Checksum', value: '0x3B9A', highlight: true },
+];
+
+export const IP_FIELDS: HeaderField[] = [
+  { label: 'Version', value: 'IPv4' },
+  { label: 'TTL', value: '64', highlight: true },
+  { label: 'Protocol', value: 'TCP (6)' },
+  { label: 'Src IP', value: '192.168.1.10', highlight: true },
+  { label: 'Dst IP', value: '203.0.113.5', highlight: true },
+  { label: 'Header CRC', value: '0x4F2C' },
+];
+
+export const ETHERNET_FIELDS: HeaderField[] = [
+  { label: 'Dst MAC', value: 'AA:BB:CC:DD:EE:FF', highlight: true },
+  { label: 'Src MAC', value: '11:22:33:44:55:66', highlight: true },
+  { label: 'EtherType', value: '0x0800 (IPv4)' },
+];
+
+export const CRC_FIELDS: HeaderField[] = [
+  { label: 'CRC-32', value: '0xF5A3C2D1', highlight: true },
+  { label: 'FCS', value: 'Valid' },
+];
+
+export const LAYER_COLORS = {
+  app: '#3B82F6',
+  tcp: '#22C55E',
+  udp: '#F59E0B',
+  internet: '#F97316',
+  ethernet: '#A855F7',
+  crc: '#EF4444',
+} as const;

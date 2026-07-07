@@ -1,80 +1,90 @@
 import { create } from 'zustand';
 
-// The experience has exactly two top-level states: the landing overlay, and
-// the single persistent 3D world. Everything after "start" happens inside
-// that one world — progress is tracked via `journeyStep`, not by mounting
-// or unmounting different "scenes".
-export enum SceneState {
-  LANDING,
-  RUNNING,
-}
+export type SimStep =
+  | 'IDLE'
+  | 'ENCAP_APP'
+  | 'ENCAP_TRANSPORT'
+  | 'ENCAP_INTERNET'
+  | 'ENCAP_NETWORK'
+  | 'TRAVEL_TO_R1'
+  | 'TRANSMISSION_ERROR'
+  | 'ROUTER1_ENTRY'
+  | 'ROUTER1_PROCESS'
+  | 'ROUTER1_EXIT'
+  | 'TRAVEL_TO_R2'
+  | 'ROUTER2_DECISION'
+  | 'TRAVEL_ISP'
+  | 'TRAVEL_DEST'
+  | 'DECAP_NETWORK'
+  | 'DECAP_INTERNET'
+  | 'DECAP_TRANSPORT'
+  | 'DECAP_APP'
+  | 'COMPLETE';
 
-// A continuous timeline describing where the packet is in its journey.
-// New layers (Internet, Network Interface, ...) extend this enum — they
-// never require swapping out the world or the camera rig.
-export enum JourneyStep {
-  INTRO,
-  LAPTOP_READY,
-  SENDING,
-  APP_HEADER,
-  TRANSPORT_SELECT,
-  TRANSPORT_HANDSHAKE,
-  TRANSPORT_HEADER,
-  TRANSPORT_QUIZ,
-  TRANSPORT_COMPARISON,
-  TRANSPORT_CHALLENGE,
-  COMPLETE,
-}
+export type Protocol = 'TCP' | 'UDP';
+export type RoutingChoice = 'IGP' | 'EGP';
+export type CameraPreset = 'OVERVIEW' | 'SOURCE' | 'ROUTER1' | 'ROUTER2' | 'ISP' | 'DEST';
 
-export interface HeaderField {
-  label: string;
-  value: string;
-  explanation?: string;
-}
-
-export interface HeaderData {
-  id: string;
-  name: string;
-  fields: HeaderField[];
-  color: string;
-}
-
-export type TransportProtocol = 'TCP' | 'UDP';
-
-interface SimulationState {
-  sceneState: SceneState;
-  journeyStep: JourneyStep;
-  narrationText: string | null;
-  packetHeaders: HeaderData[];
-  transportProtocol: TransportProtocol | null;
+interface SimState {
+  step: SimStep;
+  isRunning: boolean;
+  isPaused: boolean;
+  speed: number;
+  protocol: Protocol;
+  routingChoice: RoutingChoice | null;
+  ttl: number;
+  currentRouter: string;
+  errorActive: boolean;
+  ethernetDecapped: boolean;
+  cameraPreset: CameraPreset;
 
   start: () => void;
-  setJourneyStep: (step: JourneyStep) => void;
-  setNarrationText: (text: string | null) => void;
-  addPacketHeader: (header: HeaderData) => void;
-  setTransportProtocol: (protocol: TransportProtocol | null) => void;
-  resetSimulation: () => void;
+  pause: () => void;
+  reset: () => void;
+  setSpeed: (s: number) => void;
+  setProtocol: (p: Protocol) => void;
+  setStep: (s: SimStep) => void;
+  setRoutingChoice: (c: RoutingChoice) => void;
+  decrementTtl: () => void;
+  setCurrentRouter: (r: string) => void;
+  setErrorActive: (v: boolean) => void;
+  setEthernetDecapped: (v: boolean) => void;
+  setCameraPreset: (p: CameraPreset) => void;
 }
 
-export const useSimulationStore = create<SimulationState>((set) => ({
-  sceneState: SceneState.LANDING,
-  journeyStep: JourneyStep.INTRO,
-  narrationText: null,
-  packetHeaders: [],
-  transportProtocol: null,
+export const useSimStore = create<SimState>((set) => ({
+  step: 'IDLE',
+  isRunning: false,
+  isPaused: false,
+  speed: 1,
+  protocol: 'TCP',
+  routingChoice: null,
+  ttl: 64,
+  currentRouter: '—',
+  errorActive: false,
+  ethernetDecapped: false,
+  cameraPreset: 'OVERVIEW',
 
-  start: () => set({ sceneState: SceneState.RUNNING, journeyStep: JourneyStep.INTRO }),
-  setJourneyStep: (step) => set({ journeyStep: step }),
-  setNarrationText: (text) => set({ narrationText: text }),
-  addPacketHeader: (header) => set((state) => ({
-    packetHeaders: [...state.packetHeaders, header],
-  })),
-  setTransportProtocol: (protocol) => set({ transportProtocol: protocol }),
-  resetSimulation: () => set({
-    sceneState: SceneState.LANDING,
-    journeyStep: JourneyStep.INTRO,
-    narrationText: null,
-    packetHeaders: [],
-    transportProtocol: null,
+  start: () => set({ isRunning: true, isPaused: false, step: 'ENCAP_APP', cameraPreset: 'SOURCE' }),
+  pause: () => set((s) => ({ isPaused: !s.isPaused })),
+  reset: () => set({
+    step: 'IDLE',
+    isRunning: false,
+    isPaused: false,
+    routingChoice: null,
+    ttl: 64,
+    currentRouter: '—',
+    errorActive: false,
+    ethernetDecapped: false,
+    cameraPreset: 'OVERVIEW',
   }),
+  setSpeed: (speed) => set({ speed }),
+  setProtocol: (protocol) => set({ protocol }),
+  setStep: (step) => set({ step }),
+  setRoutingChoice: (routingChoice) => set({ routingChoice }),
+  decrementTtl: () => set((s) => ({ ttl: s.ttl - 1 })),
+  setCurrentRouter: (currentRouter) => set({ currentRouter }),
+  setErrorActive: (errorActive) => set({ errorActive }),
+  setEthernetDecapped: (ethernetDecapped) => set({ ethernetDecapped }),
+  setCameraPreset: (cameraPreset) => set({ cameraPreset }),
 }));

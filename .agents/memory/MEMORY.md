@@ -1,0 +1,1 @@
+- [NetworkVerse v2 architecture](networkverse-v2.md) — Single Canvas world, 4 glassmorphism HTML overlay panels, step-driven simulation, all 4 OSI layers.

@@ -1,0 +1,549 @@
+NETWORKVERSE RESEARCH PROTOTYPE (VERSION 2)
+
+I DO NOT WANT A GAME.
+
+I DO NOT WANT A VR DEMO.
+
+I WANT A PROFESSIONAL WEBSITE THAT CONTAINS A SINGLE FULLSCREEN 3D EXPERIENCE.
+
+The application must look like a futuristic educational dashboard similar to Apple VisionOS, Linear, Figma, Tesla UI, or NASA mission control.
+
+Everything happens on ONE SINGLE PAGE.
+
+The user must NEVER navigate to another screen.
+
+No scene switching.
+
+No popups.
+
+No giant floating cubes.
+
+No separate packet viewer.
+
+Everything should happen inside one continuous 3D world.
+
+==========================================================
+
+TECH STACK
+
+Use
+
+React
+Vite
+Three.js
+React Three Fiber
+Drei
+GSAP
+TailwindCSS
+
+NO Babylon.js.
+
+NO Unity.
+
+NO iframe.
+
+NO external viewers.
+
+==========================================================
+
+LAYOUT
+
+The page occupies 100% of the browser.
+
+The Three.js canvas fills the entire background.
+
+All controls are HTML overlays above the canvas.
+
+Exactly like modern Apple VisionOS interfaces.
+
+The page contains
+
+Top Left
+
+Title
+
+Network Packet Journey
+
+Subtitle
+
+Interactive TCP/IP Network Simulator
+
+Top Right
+
+Information Panel
+
+Current Layer
+
+Protocol
+
+Packet Size
+
+Source
+
+Destination
+
+TTL
+
+Status
+
+Current Router
+
+Everything updates live.
+
+Bottom Left
+
+Packet Structure Panel
+
+This always stays visible.
+
+It must show
+
+Application Data
+
+↓
+
+TCP Header
+
+↓
+
+IP Header
+
+↓
+
+Ethernet Header
+
+↓
+
+Frame
+
+Whenever a header is added it animates inside this panel.
+
+No popup windows.
+
+Bottom Center
+
+Control Buttons
+
+Start
+
+Pause
+
+Reset
+
+Speed
+
+TCP
+
+UDP
+
+The TCP and UDP buttons behave like radio buttons.
+
+Bottom Right
+
+Explanation Panel
+
+Shows
+
+Current Step
+
+Why this happens
+
+Real networking explanation
+
+This updates automatically.
+
+==========================================================
+
+THE 3D WORLD
+
+The entire animation happens inside ONE ROOM.
+
+Camera never leaves the room.
+
+Inside the room place
+
+Laptop
+
+Router 1
+
+Router 2
+
+ISP Cloud
+
+Destination Laptop
+
+Switch
+
+Network cables
+
+Server Rack
+
+All objects remain visible.
+
+The camera only rotates and zooms smoothly.
+
+Never teleport.
+
+==========================================================
+
+ANIMATION FLOW
+
+User presses
+
+START
+
+Laptop screen lights up.
+
+Application Data appears on the laptop.
+
+Example
+
+Hello Server
+
+Bytes
+
+48 Bytes
+
+The packet begins glowing.
+
+==========================================================
+
+STEP 1
+
+Application Layer
+
+Only application data exists.
+
+Highlight it.
+
+Information panel updates.
+
+==========================================================
+
+STEP 2
+
+Transport Layer
+
+Animate
+
+TCP Header
+
+sliding onto the packet.
+
+Packet physically becomes larger.
+
+Packet structure panel updates.
+
+If TCP selected
+
+Show
+
+Sequence Number
+
+ACK
+
+Checksum
+
+Flags
+
+Window Size
+
+If UDP selected
+
+Show
+
+Length
+
+Checksum
+
+No retransmission.
+
+==========================================================
+
+STEP 3
+
+Internet Layer
+
+Animate
+
+IP Header
+
+attaching onto packet.
+
+Display
+
+Source IP
+
+Destination IP
+
+TTL
+
+Protocol
+
+==========================================================
+
+STEP 4
+
+Network Interface Layer
+
+Animate
+
+Ethernet Header
+
+Destination MAC
+
+Source MAC
+
+EtherType
+
+Then
+
+Ethernet Trailer
+
+CRC
+
+Frame Check Sequence
+
+The packet now visually becomes a complete Ethernet Frame.
+
+==========================================================
+
+PACKET DESIGN
+
+Do NOT create a giant cube.
+
+Instead create
+
+a futuristic transparent capsule
+
+with glowing layers
+
+Every protocol header is a colored shell.
+
+Application
+
+Blue
+
+TCP
+
+Green
+
+IP
+
+Orange
+
+Ethernet
+
+Purple
+
+CRC
+
+Red
+
+The shells animate smoothly onto the packet.
+
+==========================================================
+
+CAMERA
+
+Never jumps.
+
+Use cinematic movements.
+
+Slow zoom.
+
+Slow orbit.
+
+Small pans.
+
+Apple product presentation style.
+
+==========================================================
+
+ROUTER
+
+When packet reaches Router 1
+
+Animate packet entering router.
+
+Router opens.
+
+Packet pauses.
+
+Ethernet Header becomes transparent.
+
+Router reads only Layer 3.
+
+Highlight
+
+Destination IP
+
+TTL
+
+Routing Table
+
+Explain in panel
+
+Routers inspect Layer 3 information.
+
+Then
+
+Decrease TTL by 1.
+
+Animate it.
+
+Rebuild Ethernet Frame.
+
+Packet exits.
+
+==========================================================
+
+TCP MODE
+
+Inject one transmission error.
+
+Packet flashes red.
+
+Router detects corruption.
+
+Receiver rejects packet.
+
+Sender retransmits.
+
+Show
+
+Retransmission
+
+ACK
+
+==========================================================
+
+UDP MODE
+
+Inject one transmission error.
+
+Packet flashes red.
+
+Packet disappears.
+
+Explanation
+
+UDP does not retransmit lost packets.
+
+==========================================================
+
+NEXT DECISION
+
+Display a floating question above Router 2
+
+Stay inside current network?
+
+Buttons
+
+IGP
+
+EGP
+
+If IGP
+
+Packet goes directly to destination router.
+
+If EGP
+
+Packet travels through ISP Cloud first.
+
+Inside ISP
+
+Show that routing decisions depend only on IP Header.
+
+Do NOT add another Transport Header.
+
+Do NOT recreate Application Header.
+
+Only Ethernet Header changes at every hop.
+
+This must be explained visually.
+
+==========================================================
+
+DESTINATION
+
+Packet reaches destination laptop.
+
+Animate decapsulation.
+
+Ethernet removed.
+
+IP removed.
+
+TCP removed.
+
+Application Data delivered.
+
+Laptop displays
+
+Hello Server
+
+Transfer Successful
+
+==========================================================
+
+VISUAL STYLE
+
+Dark background
+
+Glass UI
+
+Blue neon
+
+Cyan glow
+
+Subtle bloom
+
+Soft shadows
+
+Rounded panels
+
+Apple VisionOS aesthetics
+
+NO cartoon graphics.
+
+NO game UI.
+
+NO giant buttons.
+
+NO oversized text.
+
+==========================================================
+
+RESPONSIVE
+
+The website must look excellent on
+
+Chrome Desktop
+
+Meta Quest Browser
+
+Edge
+
+Fullscreen
+
+All HTML panels remain readable.
+
+The Three.js scene scales correctly.
+
+Nothing should overlap.
+
+==========================================================
+
+IMPORTANT
+
+This is NOT a game.
+
+This is an educational research simulator for a university HCI experiment.
+
+The user must feel they are watching a live networking visualization inside a futuristic laboratory.
+
+The entire experience must happen on ONE PAGE without opening new scenes or separate packet viewers.
+
+The interface should resemble a professional scientific visualization tool rather than a game.
