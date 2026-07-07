@@ -1,0 +1,302 @@
+The visual quality is now sufficient.
+
+Do NOT redesign the UI.
+
+Do NOT change the existing architecture.
+
+The next task is to transform this from a passive animation into an interactive educational simulator.
+
+The simulation must pause at important learning moments and require user interaction before continuing.
+
+=========================
+STEP 1
+Application Layer
+=========================
+
+The packet contains:
+
+"Hello Server"
+
+Pause the simulation.
+
+Allow the user to click the Application Data.
+
+Show a side panel explaining:
+
+• What is Application Layer?
+• Why does only data exist at this stage?
+• Example protocols:
+HTTP
+HTTPS
+FTP
+SMTP
+DNS
+
+After the user closes the explanation, continue.
+
+=========================
+STEP 2
+Transport Layer
+=========================
+
+Pause.
+
+Ask the user:
+
+Choose Transport Protocol
+
+○ TCP
+○ UDP
+
+The simulation cannot continue until one is selected.
+
+Animate the chosen header wrapping around the packet.
+
+If TCP:
+
+Show
+
+Sequence Number
+Acknowledgement Number
+Window Size
+Flags
+Checksum
+
+If UDP:
+
+Show
+
+Length
+Checksum
+
+Explain why UDP has a smaller header.
+
+=========================
+STEP 3
+Internet Layer
+=========================
+
+Pause.
+
+The IP header appears.
+
+Allow the user to click each field.
+
+Source IP
+
+Destination IP
+
+TTL
+
+Protocol
+
+Identification
+
+Each click opens a small explanation.
+
+=========================
+STEP 4
+Network Interface Layer
+=========================
+
+Pause.
+
+Animate the Ethernet Header and Trailer separately.
+
+Allow the user to inspect:
+
+Destination MAC
+
+Source MAC
+
+EtherType
+
+CRC
+
+Explain the purpose of each field.
+
+=========================
+ROUTER 1
+=========================
+
+When the packet reaches Router 1:
+
+Pause.
+
+Highlight the IP Header.
+
+Animate the Ethernet Header fading out.
+
+Explain:
+
+Routers ignore Application Layer.
+
+Routers ignore TCP.
+
+Routers inspect Layer 3.
+
+Show a simple routing table.
+
+Destination Network
+
+Next Hop
+
+Interface
+
+Ask the user:
+
+Which field should the router inspect?
+
+A
+Destination IP
+
+B
+Application Data
+
+C
+Source Port
+
+Only Destination IP is correct.
+
+If incorrect:
+
+Explain why.
+
+Try again.
+
+=========================
+TTL
+=========================
+
+Animate TTL
+
+64
+
+↓
+
+63
+
+Explain why TTL decreases.
+
+=========================
+TCP
+=========================
+
+If TCP selected:
+
+Inject one packet corruption.
+
+Pause.
+
+Ask
+
+What happens next?
+
+Options:
+
+Retransmission
+
+Drop permanently
+
+Ignore error
+
+Only Retransmission is correct.
+
+Then animate retransmission.
+
+=========================
+UDP
+=========================
+
+If UDP selected:
+
+Inject corruption.
+
+Explain why no retransmission occurs.
+
+Continue.
+
+=========================
+ROUTER 2
+=========================
+
+Pause.
+
+Ask:
+
+Choose Routing Type
+
+○ Stay inside this Autonomous System (IGP)
+
+○ Leave this Autonomous System (EGP)
+
+Animate the selected path.
+
+If EGP:
+
+Route through ISP Cloud.
+
+Explain why BGP is used.
+
+If IGP:
+
+Go directly to Router 2.
+
+Explain why OSPF/RIP/EIGRP are used.
+
+=========================
+DESTINATION
+=========================
+
+Pause after arrival.
+
+Animate decapsulation.
+
+One header removed at a time.
+
+Ethernet
+
+↓
+
+IP
+
+↓
+
+TCP/UDP
+
+↓
+
+Application Data
+
+After each removal,
+
+Explain why that layer is no longer needed.
+
+=========================
+FINAL SCREEN
+=========================
+
+Display:
+
+Transfer Successful
+
+Packet Delivered
+
+Show total travel time.
+
+Show total routers crossed.
+
+Show selected protocol.
+
+Show routing type.
+
+=========================
+IMPORTANT
+
+The simulation should feel like a guided laboratory experiment.
+
+Do not autoplay everything.
+
+Require user interaction before every major networking concept.
+
+Every interaction should improve learning rather than simply adding animations.

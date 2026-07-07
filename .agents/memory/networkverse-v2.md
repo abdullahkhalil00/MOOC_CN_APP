@@ -35,7 +35,18 @@ IDLE → ENCAP_APP → ENCAP_TRANSPORT → ENCAP_INTERNET → ENCAP_NETWORK → 
 ## WebGL in sandbox
 The screenshot sandbox has no GPU — WebGL context error + red overlay are expected in screenshots. App works in all real browsers (Chrome, Edge, Meta Quest).
 
+## Interactive system (v3 additions)
+- `InteractionType` union added to store — `LEARN_APP | CHOOSE_PROTOCOL | INSPECT_IP | INSPECT_ETH | QUIZ_ROUTER | LEARN_TTL | QUIZ_TCP_ERROR | LEARN_UDP_DROP | LEARN_DECAP | SHOW_STATS`
+- `interactionBlocking: boolean` in store — blocks SimulationController auto-advance when true
+- `triggerInteraction(t)` called in SimulationController on step entry for steps in `STEP_INTERACTIONS` map
+- `TRANSMISSION_ERROR` is protocol-dependent: TCP → QUIZ_TCP_ERROR, UDP → LEARN_UDP_DROP
+- `InteractionPanel.tsx` — centered overlay with dark backdrop; contains all 9 sub-components as named functions; each has `onContinue` callback that calls `completeInteraction()`
+- `CompleteStats` component added inline in Overlay.tsx ExplanationPanel for COMPLETE step
+- Stats tracked: `startTime` (set in `start()`), `routersCrossed` (incremented at ROUTER1_ENTRY + TRAVEL_TO_R2)
+- QUIZ components (QuizRouter, QuizTcpError) have local useState for selection/submission; wrong answers show feedback + Try Again
+
 ## Why
 - CameraControls `autoRotate` must be set via ref, not JSX prop (type definition gap)
 - `layer` field in StepConfig is `string | ((p: Protocol) => string)` to support protocol-sensitive layer names
 - `SimulationController` outside Canvas because it uses `useEffect`/`setTimeout` (not `useFrame`)
+- InteractionPanel uses `AnimatePresence` with `key={interactionType}` so each panel type gets its own mount/unmount animation

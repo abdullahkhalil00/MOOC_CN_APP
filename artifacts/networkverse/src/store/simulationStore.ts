@@ -25,7 +25,20 @@ export type Protocol = 'TCP' | 'UDP';
 export type RoutingChoice = 'IGP' | 'EGP';
 export type CameraPreset = 'OVERVIEW' | 'SOURCE' | 'ROUTER1' | 'ROUTER2' | 'ISP' | 'DEST';
 
+export type InteractionType =
+  | 'LEARN_APP'
+  | 'CHOOSE_PROTOCOL'
+  | 'INSPECT_IP'
+  | 'INSPECT_ETH'
+  | 'QUIZ_ROUTER'
+  | 'LEARN_TTL'
+  | 'QUIZ_TCP_ERROR'
+  | 'LEARN_UDP_DROP'
+  | 'LEARN_DECAP'
+  | 'SHOW_STATS';
+
 interface SimState {
+  // Core sim state
   step: SimStep;
   isRunning: boolean;
   isPaused: boolean;
@@ -38,6 +51,17 @@ interface SimState {
   ethernetDecapped: boolean;
   cameraPreset: CameraPreset;
 
+  // Interaction system
+  interactionType: InteractionType | null;
+  interactionBlocking: boolean;
+  viewedFields: string[];       // field names opened during IP/Eth inspection
+  quizWrongAnswer: string | null;
+
+  // Stats
+  startTime: number | null;
+  routersCrossed: number;
+
+  // Core actions
   start: () => void;
   pause: () => void;
   reset: () => void;
@@ -50,6 +74,13 @@ interface SimState {
   setErrorActive: (v: boolean) => void;
   setEthernetDecapped: (v: boolean) => void;
   setCameraPreset: (p: CameraPreset) => void;
+
+  // Interaction actions
+  triggerInteraction: (t: InteractionType) => void;
+  completeInteraction: () => void;
+  viewField: (f: string) => void;
+  setQuizWrongAnswer: (a: string | null) => void;
+  incrementRoutersCrossed: () => void;
 }
 
 export const useSimStore = create<SimState>((set) => ({
@@ -65,19 +96,29 @@ export const useSimStore = create<SimState>((set) => ({
   ethernetDecapped: false,
   cameraPreset: 'OVERVIEW',
 
-  start: () => set({ isRunning: true, isPaused: false, step: 'ENCAP_APP', cameraPreset: 'SOURCE' }),
+  interactionType: null,
+  interactionBlocking: false,
+  viewedFields: [],
+  quizWrongAnswer: null,
+
+  startTime: null,
+  routersCrossed: 0,
+
+  start: () => set({
+    isRunning: true, isPaused: false, step: 'ENCAP_APP',
+    cameraPreset: 'SOURCE', startTime: Date.now(),
+    routersCrossed: 0, interactionType: null, interactionBlocking: false,
+  }),
   pause: () => set((s) => ({ isPaused: !s.isPaused })),
   reset: () => set({
-    step: 'IDLE',
-    isRunning: false,
-    isPaused: false,
-    routingChoice: null,
-    ttl: 64,
-    currentRouter: '—',
-    errorActive: false,
-    ethernetDecapped: false,
-    cameraPreset: 'OVERVIEW',
+    step: 'IDLE', isRunning: false, isPaused: false,
+    routingChoice: null, ttl: 64, currentRouter: '—',
+    errorActive: false, ethernetDecapped: false, cameraPreset: 'OVERVIEW',
+    interactionType: null, interactionBlocking: false,
+    viewedFields: [], quizWrongAnswer: null,
+    startTime: null, routersCrossed: 0,
   }),
+
   setSpeed: (speed) => set({ speed }),
   setProtocol: (protocol) => set({ protocol }),
   setStep: (step) => set({ step }),
@@ -87,4 +128,15 @@ export const useSimStore = create<SimState>((set) => ({
   setErrorActive: (errorActive) => set({ errorActive }),
   setEthernetDecapped: (ethernetDecapped) => set({ ethernetDecapped }),
   setCameraPreset: (cameraPreset) => set({ cameraPreset }),
+
+  triggerInteraction: (interactionType) => set({
+    interactionType, interactionBlocking: true,
+    viewedFields: [], quizWrongAnswer: null,
+  }),
+  completeInteraction: () => set({ interactionType: null, interactionBlocking: false }),
+  viewField: (f) => set((s) => ({
+    viewedFields: s.viewedFields.includes(f) ? s.viewedFields : [...s.viewedFields, f],
+  })),
+  setQuizWrongAnswer: (quizWrongAnswer) => set({ quizWrongAnswer }),
+  incrementRoutersCrossed: () => set((s) => ({ routersCrossed: s.routersCrossed + 1 })),
 }));

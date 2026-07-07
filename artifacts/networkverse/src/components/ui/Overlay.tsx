@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSimStore } from '../../store/simulationStore';
 import { STEP_CONFIGS, atOrPast, before } from '../../lib/stepConfig';
 import { LAYER_COLORS } from '../../lib/protocolData';
+import { InteractionPanel } from './InteractionPanel';
 
 // ─── Shared primitives ───────────────────────────────────────────────────────
 
@@ -57,6 +58,47 @@ function LayerRow({ color, name, size, show, removing }: {
         </motion.div>
       )}
     </AnimatePresence>
+  );
+}
+
+// ─── Complete Stats ──────────────────────────────────────────────────────────
+
+function CompleteStats() {
+  const protocol      = useSimStore((s) => s.protocol);
+  const routingChoice = useSimStore((s) => s.routingChoice);
+  const routersCrossed = useSimStore((s) => s.routersCrossed);
+  const startTime     = useSimStore((s) => s.startTime);
+  const elapsed       = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
+
+  function StatRow({ label, value, color }: { label: string; value: string; color?: string }) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <span style={{ fontSize: '10px', color: 'rgba(148,163,184,0.7)' }}>{label}</span>
+        <span style={{ fontSize: '10px', fontFamily: 'monospace', fontWeight: 600, color: color ?? '#e2e8f0' }}>{value}</span>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      style={{ marginTop: '12px' }}
+    >
+      <div style={{
+        padding: '10px 12px', borderRadius: '8px',
+        background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.35)',
+        textAlign: 'center', marginBottom: '10px',
+      }}>
+        <div style={{ fontSize: '14px', color: '#4ade80', fontWeight: 700 }}>Transfer Successful ✓</div>
+        <div style={{ fontSize: '9px', color: 'rgba(74,222,128,0.7)', marginTop: '2px', fontFamily: 'monospace' }}>Packet Delivered</div>
+      </div>
+      <StatRow label="Travel Time"      value={`${elapsed}s`}                            color="#38bdf8" />
+      <StatRow label="Routers Crossed"  value={String(routersCrossed)}                   color="#f97316" />
+      <StatRow label="Protocol"         value={protocol}                                  color={protocol === 'TCP' ? '#22c55e' : '#f59e0b'} />
+      <StatRow label="Routing Type"     value={routingChoice ?? '—'}                     color="#a855f7" />
+      <StatRow label="OSI Layers"       value="All 4 traversed"                          color="#4ade80" />
+    </motion.div>
   );
 }
 
@@ -341,23 +383,8 @@ function ExplanationPanel() {
             </div>
           )}
 
-          {/* Complete banner */}
-          {step === 'COMPLETE' && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              style={{
-                marginTop: '12px', padding: '10px', borderRadius: '8px',
-                background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.35)',
-                textAlign: 'center',
-              }}
-            >
-              <div style={{ fontSize: '13px', color: '#4ade80', fontWeight: 700 }}>Transfer Successful ✓</div>
-              <div style={{ fontSize: '9px', color: 'rgba(74,222,128,0.7)', marginTop: '3px', fontFamily: 'monospace' }}>
-                All 4 layers traversed
-              </div>
-            </motion.div>
-          )}
+          {/* Complete stats */}
+          {step === 'COMPLETE' && <CompleteStats />}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -397,6 +424,11 @@ export function Overlay() {
       {/* Bottom Right */}
       <div style={{ position: 'absolute', bottom: pad, right: pad, pointerEvents: 'auto' }}>
         <ExplanationPanel />
+      </div>
+
+      {/* Centered interaction overlay — appears over everything during learning moments */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'auto' }}>
+        <InteractionPanel />
       </div>
     </div>
   );
