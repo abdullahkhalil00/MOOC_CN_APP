@@ -562,6 +562,7 @@ export function InteractionPanel() {
               background: 'rgba(2, 6, 23, 0.72)',
               backdropFilter: 'blur(5px)',
               WebkitBackdropFilter: 'blur(5px)',
+              pointerEvents: 'auto',
             }}
           />
 
@@ -579,6 +580,7 @@ export function InteractionPanel() {
               overflowY: 'auto', zIndex: 50,
               scrollbarWidth: 'thin',
               scrollbarColor: 'rgba(56,189,248,0.2) transparent',
+              pointerEvents: 'auto',
             }}
           >
             <div className="glass-panel" style={{ padding: '28px 32px' }}>

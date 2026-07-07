@@ -426,8 +426,8 @@ export function Overlay() {
         <ExplanationPanel />
       </div>
 
-      {/* Centered interaction overlay — appears over everything during learning moments */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'auto' }}>
+      {/* Centered interaction overlay — pointer-events:none so it never blocks clicks when hidden */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <InteractionPanel />
       </div>
     </div>
