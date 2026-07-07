@@ -557,24 +557,25 @@ export function InteractionPanel() {
   return (
     <AnimatePresence>
       {show && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            style={{
-              position: 'absolute', inset: 0, zIndex: 40,
-              background: 'rgba(2, 6, 23, 0.72)',
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-              pointerEvents: 'auto',
-            }}
-          />
-
-          {/* Card */}
+        /* Backdrop doubles as the flex centering container */
+        <motion.div
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 40,
+            background: 'rgba(2, 6, 23, 0.72)',
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+            pointerEvents: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {/* Card — centered as flex child */}
           <motion.div
             key={interactionType}
             initial={{ opacity: 0, scale: 0.96, y: 16 }}
@@ -582,8 +583,6 @@ export function InteractionPanel() {
             exit={{ opacity: 0, scale: 0.97, y: 8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{
-              position: 'absolute', top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
               width: '500px', maxWidth: '92vw',
               zIndex: 50, pointerEvents: 'auto',
             }}
@@ -599,7 +598,7 @@ export function InteractionPanel() {
               {renderContent()}
             </div>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );
