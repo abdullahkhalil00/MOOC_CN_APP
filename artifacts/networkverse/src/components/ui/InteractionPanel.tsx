@@ -26,13 +26,21 @@ function Body({ children }: { children: React.ReactNode }) {
 
 function ContinueBtn({ onClick, label = 'Continue →' }: { onClick: () => void; label?: string }) {
   return (
-    <button onClick={onClick} style={{
-      marginTop: '18px', width: '100%', padding: '10px',
-      borderRadius: '8px', border: '1px solid rgba(56,189,248,0.6)',
-      background: 'rgba(56,189,248,0.15)', color: '#7dd3fc',
-      fontSize: '11px', fontFamily: 'monospace', fontWeight: 700,
-      letterSpacing: '0.1em', cursor: 'pointer', transition: 'all 0.15s',
-    }}>{label}</button>
+    <div style={{
+      position: 'sticky', bottom: 0,
+      marginLeft: -32, marginRight: -32,
+      padding: '10px 32px 28px',
+      background: 'rgba(2,8,26,0.97)',
+      borderTop: '1px solid rgba(56,189,248,0.08)',
+    }}>
+      <button onClick={onClick} style={{
+        width: '100%', padding: '11px',
+        borderRadius: '8px', border: '1px solid rgba(56,189,248,0.6)',
+        background: 'rgba(56,189,248,0.18)', color: '#7dd3fc',
+        fontSize: '11px', fontFamily: 'monospace', fontWeight: 700,
+        letterSpacing: '0.1em', cursor: 'pointer', transition: 'all 0.15s',
+      }}>{label}</button>
+    </div>
   );
 }
 
@@ -576,14 +584,18 @@ export function InteractionPanel() {
             style={{
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '500px', maxWidth: '92vw', maxHeight: '82vh',
-              overflowY: 'auto', zIndex: 50,
-              scrollbarWidth: 'thin',
-              scrollbarColor: 'rgba(56,189,248,0.2) transparent',
-              pointerEvents: 'auto',
+              width: '500px', maxWidth: '92vw',
+              zIndex: 50, pointerEvents: 'auto',
             }}
           >
-            <div className="glass-panel" style={{ padding: '28px 32px' }}>
+            {/* glass-panel is the scroll container so position:sticky inside resolves here */}
+            <div className="glass-panel" style={{
+              padding: '28px 32px 0',
+              maxHeight: '82vh',
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(56,189,248,0.2) transparent',
+            }}>
               {renderContent()}
             </div>
           </motion.div>
