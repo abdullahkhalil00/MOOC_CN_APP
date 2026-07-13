@@ -50,10 +50,10 @@ export const CRC_FIELDS: HeaderField[] = [
 ];
 
 export const LAYER_COLORS = {
-  app: '#3B82F6',
-  tcp: '#22C55E',
-  udp: '#F59E0B',
-  internet: '#F97316',
-  ethernet: '#A855F7',
-  crc: '#EF4444',
+  app: '#818cf8',   // Application Layer  — indigo/violet
+  tcp: '#34d399',   // Transport (TCP)     — emerald
+  udp: '#f59e0b',   // Transport (UDP)     — amber
+  internet: '#fb923c',   // Network/IP Layer    — orange
+  ethernet: '#fbbf24',   // Data Link Layer     — yellow‑amber
+  crc: '#f87171',   // Physical/CRC        — red
 } as const;

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -68,10 +69,19 @@
   --destructive-foreground: 210 40% 98%;
   --input: 217 32% 17%;
   --ring: 224 71.4% 4.1%;
-  
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-mono: 'Menlo', monospace;
+
+  --app-font-sans: 'Inter', system-ui, sans-serif;
+  --app-font-mono: 'JetBrains Mono', 'Menlo', monospace;
   --radius: 0.75rem;
+
+  /* Layer identity colors */
+  --layer-app:       #818cf8;   /* Application  — indigo/purple */
+  --layer-transport: #34d399;   /* Transport     — emerald green */
+  --layer-network:   #fb923c;   /* Network/IP    — orange        */
+  --layer-datalink:  #fbbf24;   /* Data Link     — amber/yellow  */
+  --layer-physical:  #f87171;   /* Physical/CRC  — red           */
+  --layer-tcp:       #34d399;
+  --layer-udp:       #f59e0b;
 }
 
 @layer base {
@@ -83,19 +93,117 @@
   }
 }
 
+/* ─── Premium Glass Panel ─────────────────────────────────────────────────── */
 .glass-panel {
-  background: rgba(2, 8, 26, 0.84);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  border-radius: 12px;
+  background: rgba(4, 10, 30, 0.82);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(129, 140, 248, 0.18);
+  border-radius: 16px;
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+    0 2px 40px rgba(0, 0, 0, 0.7),
+    0 0 0 0.5px rgba(255, 255, 255, 0.04) inset,
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+/* Top accent line on glass panels */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, transparent 60%);
+  pointer-events: none;
 }
 
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(129, 140, 248, 0.3);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(129, 140, 248, 0.55); }
+
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 8px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Utility helpers ─────────────────────────────────────────────────────── */
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor;
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.ctrl-btn {
+  position: relative;
+  padding: 7px 16px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-family: var(--app-font-mono);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  overflow: hidden;
+}
+
+.ctrl-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.15s;
+}
+
+.ctrl-btn:hover::before {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ctrl-btn:active {
+  transform: scale(0.97);
+}
